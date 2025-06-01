@@ -3,23 +3,70 @@ using DesafioProjetoHospedagem.Models;
 
 Console.OutputEncoding = Encoding.UTF8;
 
-// Cria os modelos de hóspedes e cadastra na lista de hóspedes
-List<Pessoa> hospedes = new List<Pessoa>();
 
-Pessoa p1 = new Pessoa(nome: "Hóspede 1");
-Pessoa p2 = new Pessoa(nome: "Hóspede 2");
 
-hospedes.Add(p1);
-hospedes.Add(p2);
+Reserva reserva = new Reserva();
+bool executando = true;
 
-// Cria a suíte
-Suite suite = new Suite(tipoSuite: "Premium", capacidade: 2, valorDiaria: 30);
+while (executando)
+    {
+        Console.Clear();
+        Console.WriteLine(@"
+======= Sistema de Reservas =======
+1 - Cadastrar Suíte
+2 - Cadastrar Hóspedes
+3 - Exibir Resumo da Reserva
+4 - Sair
+====================================
+Escolha uma opção: ");
 
-// Cria uma nova reserva, passando a suíte e os hóspedes
-Reserva reserva = new Reserva(diasReservados: 5);
-reserva.CadastrarSuite(suite);
-reserva.CadastrarHospedes(hospedes);
+        string opcao = Console.ReadLine();
 
-// Exibe a quantidade de hóspedes e o valor da diária
-Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
-Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria()}");
+        switch (opcao)
+        {
+            case "1":
+                reserva.CadastrarSuite();
+                break;
+
+            case "2":
+                try
+                {
+                    reserva.CadastrarHospedes();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"\nErro: {ex.Message}");
+                    Console.WriteLine("\nPressione qualquer tecla para continuar...");
+                    Console.ReadKey();
+                }
+                break;
+
+            case "3":
+                try
+                {
+                    Console.Clear();
+                    reserva.Resumo();
+                    Console.WriteLine("\nPressione qualquer tecla para continuar...");
+                    Console.ReadKey();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"\nErro: {ex.Message}");
+                    Console.WriteLine("\nPressione qualquer tecla para continuar...");
+                    Console.ReadKey();
+                }
+                break;
+
+            case "0":
+                executando = false;
+                Console.WriteLine("\nEncerrando o programa...");
+                break;
+
+            default:
+                Console.WriteLine("Opção inválida! Pressione qualquer tecla para tentar novamente...");
+                Console.ReadKey();
+                break;
+            }
+        }
+    
+
